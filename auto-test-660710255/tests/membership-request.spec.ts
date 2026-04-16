@@ -3,7 +3,7 @@ import { LoginPage } from '../pages/login.page';
 import { DashboardPage } from '../pages/dashboard.page';
 import { UserManagementPage } from '../pages/userManagement.page';
 
-test.describe('User Management System', () => {
+test.describe('User Management', () => {
     
     test.beforeEach(async ({ page }) => {
         const loginPage = new LoginPage(page);
@@ -12,7 +12,7 @@ test.describe('User Management System', () => {
         await dashboardPage.goToManageUser();
     });
 
-    test('TC-131 ตรวจสอบรายการคำขอสมัครสมาชิกในหน้า Manage Memberships', async ({ page }) => {
+    test('TC-131 เห็นรายการคำขอสมัครสมาชิกที่รออนุมัติ', async ({ page }) => {
         const userPage = new UserManagementPage(page);
         await userPage.openManageMemberships();
         await userPage.verifyRequestsVisible();
