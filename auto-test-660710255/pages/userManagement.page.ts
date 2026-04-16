@@ -6,6 +6,7 @@ export class UserManagementPage {
     readonly requestTable: Locator;
     readonly searchInput: Locator;
     readonly userRow: Locator;
+    readonly firstApproveButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -13,35 +14,30 @@ export class UserManagementPage {
         this.requestTable = page.locator('table');
         this.searchInput = page.getByRole('textbox', { name: 'Search by name, username,' });
         this.userRow = page.locator('table tbody tr');
+        
+        this.firstApproveButton = page.getByRole('button', { name: 'Approve' }).first();
     }
 
     async openManageMemberships() {
         await this.manageMembershipButton.click();
-    }
-
-    async verifyRequestsVisible() {
-        // ตรวจสอบว่าตารางหรือรายการคำขอแสดงขึ้นมา
         await expect(this.requestTable).toBeVisible();
     }
 
+    async verifyRequestsVisible() {
+        await expect(this.requestTable).toBeVisible();
+    }
+
+    async approveFirstRequest() {
+        await this.firstApproveButton.waitFor({ state: 'visible' });
+        await this.firstApproveButton.click();
+    }
+
     async searchUser(username: string) {
-        await this.searchInput.click();
         await this.searchInput.fill(username);
-        
-        // ระบบค้นหา
         await this.page.waitForLoadState('networkidle');
     }
 
     async verifySearchResult(expectedUsername: string) {
         await expect(this.userRow.first()).toContainText(expectedUsername);
-    }
-
-    async searchByMembershipNo(membershipNo: string) {
-        await this.searchInput.fill(membershipNo);
-        await this.page.waitForLoadState('networkidle');
-    }
-
-    async verifyMembershipInList(membershipNo: string) {
-        await expect(this.userRow.first()).toContainText(membershipNo);
     }
 }
