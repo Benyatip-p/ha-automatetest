@@ -52,6 +52,8 @@ test.describe('Auto Test 5 Cases', () => {
 
     await page.getByRole('button', { name: 'เข้าสู่ระบบ' }).click();
 
+    await page.waitForLoadState('networkidle');
+
     await expect(page.locator('body')).toContainText(/สวัสดี|logout/i);
   });
 
